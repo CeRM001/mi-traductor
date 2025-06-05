@@ -153,22 +153,24 @@ function downloadPdf() {
     content.innerHTML = `
         <h2>Traducción</h2>
         <p><strong>Texto original:</strong></p>
-        <p>${originalText}</p>
+        <pre>${originalText}</pre> <!-- Usar <pre> mejora la compatibilidad en móviles -->
         <p><strong>Texto traducido:</strong></p>
-        <p>${translatedText}</p>
+        <pre>${translatedText}</pre>
     `;
 
-    // Cambia el nombre del archivo PDF
     let nombreArchivo = `Traduccion_${new Date().toISOString().slice(0, 10)}.pdf`;
 
-    html2pdf().from(content).set({
-        margin: 10,
-        filename: nombreArchivo, // Aquí se cambia el nombre del archivo
-        image: { type: "jpeg", quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
-    }).save();
+    setTimeout(() => { // Asegura que el contenido se haya renderizado antes de generar el PDF
+        html2pdf().from(content).set({
+            margin: 10,
+            filename: nombreArchivo,
+            image: { type: "jpeg", quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+        }).save();
+    }, 500);
 }
+
 
 
 
